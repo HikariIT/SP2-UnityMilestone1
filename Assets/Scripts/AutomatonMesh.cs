@@ -14,7 +14,7 @@ public class AutomatonMesh {
         _objects = objects;
     }
 
-    public void SetAutomatonState(bool[,,] automatonValues) {
+    public void SetAutomatonState(float[,,] automatonValues) {
         for (var x = 0; x < _objects.GetLength(0); x++) {
             for (var y = 0; y < _objects.GetLength(1); y++) {
                 for (var z = 0; z < _objects.GetLength(2); z++) {
@@ -24,21 +24,21 @@ public class AutomatonMesh {
         }
     }
 
-    private void _modifyVoxel(GameObject targetObject, bool voxelState) {
+    private void _modifyVoxel(GameObject targetObject, float voxelState) {
         var objectRenderer = targetObject.GetComponent<MeshRenderer>();
 
         switch (_meshMode) {
             case AutomatonMeshMode.BlackAndWhite: {
-                objectRenderer.materials[0].color = voxelState ? Color.black : Color.white;
+                objectRenderer.materials[0].color = Mathf.RoundToInt(voxelState) == 1 ? Color.black : Color.white;
                 break;
             }
             case AutomatonMeshMode.WhiteAndBlack: {
-                objectRenderer.materials[0].color = voxelState ? Color.white : Color.black;
+                objectRenderer.materials[0].color = Mathf.RoundToInt(voxelState) == 1 ? Color.white : Color.black;
                 break;
             }
             case AutomatonMeshMode.ColorAndInactive: {
                 objectRenderer.materials[0].color = _automatonMeshColor;
-                targetObject.SetActive(voxelState);
+                targetObject.SetActive(Mathf.RoundToInt(voxelState) == 1);
                 break;
             }
             default:
