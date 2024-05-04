@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: b89f068506ada3647abffa8e1210ffb1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - simSettings: {fileID: 11400000, guid: 670f1128d3b00cc4ca5eec5e3db10af1, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

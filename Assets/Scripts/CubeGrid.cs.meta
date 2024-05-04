@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a79fbd773985032478ca1710c44a01e8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - simSettings: {fileID: 11400000, guid: 670f1128d3b00cc4ca5eec5e3db10af1, type: 2}
+  - CubePrefab: {fileID: 6761293699585928315, guid: 94f05fca93d8ac94bbcbd9a809a35a3d, type: 3}
+  - CubeShader: {fileID: 7200000, guid: 635dc429f585c154c91aa5c8b2992c99, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

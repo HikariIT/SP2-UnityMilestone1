@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
-  productGUID: 889f1e0e1f974b4489366ae2916c8625
+  productGUID: 9a36a85c4cb2efd47a72d79c662b4620
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: 3D Cellular Automata
+  productName: SP2FirstShader
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -676,14 +676,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: 3D Cellular Automata
+  metroPackageName: SP2FirstShader
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: 3D Cellular Automata
+  metroApplicationDescription: SP2FirstShader
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -753,11 +753,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: e8f5ae75-1146-40b5-9ed5-a1a40004ab0e
+  cloudProjectId: 72586e33-1d4d-4db1-88dd-2d9c283941a8
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 3D Cellular Automata
-  organizationId: unityalice
+  projectName: SP2FirstShader
+  organizationId: otiofthebag
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
