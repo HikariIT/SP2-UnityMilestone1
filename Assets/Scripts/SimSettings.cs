@@ -11,7 +11,7 @@ public class SimSettings: ScriptableObject
 
 	[Header("Cubes")]
 	public int CubesPerAxis = 10;
-	public int StartingCubesPerAxis = 5;
+	public int FreeMargin = 5;
 
     [Header("Time per step")]
     public float TimePerStep = 0.5f;

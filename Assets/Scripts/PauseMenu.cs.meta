@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: efcd63ce5b571114ab857a22c2d6ba52
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - pauseMenu: {instanceID: 0}
+  - settingsMenu: {instanceID: 0}
+  - prefabButton: {fileID: 80017404218087128, guid: a2f3232ab7e4af44d85d8e458e1921ec, type: 3}
+  - ParentPanel: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

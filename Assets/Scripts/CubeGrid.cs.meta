@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - simSettings: {fileID: 11400000, guid: 670f1128d3b00cc4ca5eec5e3db10af1, type: 2}
   - CubePrefab: {fileID: 6761293699585928315, guid: 94f05fca93d8ac94bbcbd9a809a35a3d, type: 3}
+  - OutsidePrefab: {fileID: 4083054249639647942, guid: 7880198d885238343974affdc5405ea8, type: 3}
   - CubeShader: {fileID: 7200000, guid: 635dc429f585c154c91aa5c8b2992c99, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}

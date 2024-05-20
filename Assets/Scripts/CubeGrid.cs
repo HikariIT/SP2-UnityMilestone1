@@ -10,20 +10,23 @@ public class CubeGrid : MonoBehaviour
 
 	[Header("Prefabs")]
 	public Transform CubePrefab;
+	public Transform OutsidePrefab;
 
 	[Header("Shaders")]
 	public ComputeShader CubeShader;
 
 	private int Seed;
 
+	private Transform _outside;
+
 	private int CubesPerAxis;
     private float TimePerStep;
 	private int numRules = 128;
-	private int StartingCubesPerAxis;
+	private int FreeMargin;
 
 	private Transform[] _cubes;
 	private int[] _cubesAlive;
-	private int[] _rules;
+	public static int[] Rules = new int[128]; //numRules
 
 	private ComputeBuffer _cubesAliveBuffer;
     private ComputeBuffer _previousCubesAliveBuffer;
@@ -36,13 +39,15 @@ public class CubeGrid : MonoBehaviour
 		CubesPerAxis = simSettings.CubesPerAxis;
 		TimePerStep = simSettings.TimePerStep;
 		Seed = simSettings.Seed;
-		StartingCubesPerAxis = simSettings.StartingCubesPerAxis;
+		FreeMargin = simSettings.FreeMargin;
 		
 		_cubesAliveBuffer = new ComputeBuffer(CubesPerAxis * CubesPerAxis * CubesPerAxis, sizeof(int));
         _previousCubesAliveBuffer = new ComputeBuffer(CubesPerAxis * CubesPerAxis * CubesPerAxis, sizeof(int));
 		_rulesBuffer = new ComputeBuffer(numRules, sizeof(int));
 
 		Profiler = new CubeGridProfiler();
+
+		CreateRules();
 	}
 
 	private void OnDestroy() {
@@ -52,7 +57,6 @@ public class CubeGrid : MonoBehaviour
 
 
 	private void Start() {
-		CreateRules();
 		CreateGrid();
 	}
 
@@ -68,29 +72,32 @@ public class CubeGrid : MonoBehaviour
 				}
 			}
 		}
+
+		_outside = Instantiate(OutsidePrefab, transform);
+		_outside.transform.position = new Vector3(CubesPerAxis/2.0f-0.5f, CubesPerAxis/2.0f-0.5f, CubesPerAxis/2.0f-0.5f);
+		_outside.transform.localScale = new Vector3(CubesPerAxis+1, CubesPerAxis+1, CubesPerAxis+1);
         UpdateAliveGPU(0);
 		UpdateCubeAliveInUnity();
 		StartCoroutine(UpdateCubeGrid(2));
 	}
 
 	void CreateRules() {
-		_rules = new int[numRules];
 		var random = new System.Random(simSettings.Seed);
 		for (int i=0; i<numRules; i++){
 			if (random.Next(0, 10) < 4){
-				_rules[i] = 1;
+				Rules[i] = 1;
 			} else {
-				_rules[i] = 0;
+				Rules[i] = 0;
 			}
 		}
-		_rulesBuffer.SetData(_rules);
+		_rulesBuffer.SetData(Rules);
 		PrintRules();
 	}
 
 	void PrintRules(){
 		string res = "";
 		for (int i=0; i<numRules; i++){
-			res += "Rule: " + System.Convert.ToString(i, 2) + " Value: " + System.Convert.ToString(_rules[i]) + "\n";
+			res += "Rule: " + System.Convert.ToString(i, 2) + " Value: " + System.Convert.ToString(Rules[i]) + "\n";
 		}
 		UnityEngine.Debug.Log(res);
 	}
@@ -123,12 +130,14 @@ public class CubeGrid : MonoBehaviour
 	void UpdateAliveGPU(int kernel) {
 		CubeShader.SetBuffer(kernel, "_Alive", _cubesAliveBuffer);
         CubeShader.SetBuffer(kernel, "_PreviousAlive", _previousCubesAliveBuffer);
+
+		_rulesBuffer.SetData(Rules);
 		CubeShader.SetBuffer(kernel, "_Rules", _rulesBuffer);
 
 		CubeShader.SetInt("_CubesPerAxis", CubesPerAxis);
 		CubeShader.SetFloat("_Time", Time.deltaTime);
-		CubeShader.SetFloat("_StartBeginIndex", (CubesPerAxis - StartingCubesPerAxis)/2);
-		CubeShader.SetFloat("_StartEndIndex", (CubesPerAxis + StartingCubesPerAxis)/2);
+		CubeShader.SetFloat("_StartBeginIndex", (FreeMargin));
+		CubeShader.SetFloat("_StartEndIndex", (CubesPerAxis - FreeMargin - 1));
 
 		int workgroups = Mathf.CeilToInt(CubesPerAxis / 8.0f);
 
