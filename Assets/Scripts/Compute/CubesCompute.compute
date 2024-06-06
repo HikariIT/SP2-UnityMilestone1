@@ -125,7 +125,7 @@ int getValueFromNeighbor3D(uint3 id, float3 offset){
     if (neighborX < 0 || neighborY < 0 || neighborZ < 0 || neighborX > _CubesPerAxis - 1 || neighborY > _CubesPerAxis - 1 || neighborZ > _CubesPerAxis - 1){
         return 0;
     }
-    return _PreviousAlive[neighborZ + _CubesPerAxis * (neighborY + _CubesPerAxis *neighborX)];
+    return _PreviousAlive[neighborZ + _CubesPerAxis * (neighborY + _CubesPerAxis * neighborX)];
 
 }
 

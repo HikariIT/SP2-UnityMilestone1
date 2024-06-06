@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using Menu;
 using UnityEngine;
 
 public class CubeGrid : MonoBehaviour
 {
 	public CubeGridProfiler Profiler;
-	public SimSettings simSettings;
+	private SimSettings _simSettings;
 
 	[Header("Prefabs")]
 	public Transform CubePrefab;
@@ -36,10 +38,8 @@ public class CubeGrid : MonoBehaviour
 	public int numberOfExecutions = 10;
 
 	private void Awake() {
-		CubesPerAxis = simSettings.CubesPerAxis;
-		TimePerStep = simSettings.TimePerStep;
-		Seed = simSettings.Seed;
-		FreeMargin = simSettings.FreeMargin;
+		UpdateSettings();
+		FreeMargin = 1;
 		
 		_cubesAliveBuffer = new ComputeBuffer(CubesPerAxis * CubesPerAxis * CubesPerAxis, sizeof(int));
         _previousCubesAliveBuffer = new ComputeBuffer(CubesPerAxis * CubesPerAxis * CubesPerAxis, sizeof(int));
@@ -47,7 +47,7 @@ public class CubeGrid : MonoBehaviour
 
 		Profiler = new CubeGridProfiler();
 
-		CreateRules();
+		UpdateRules();
 	}
 
 	private void OnDestroy() {
@@ -81,28 +81,25 @@ public class CubeGrid : MonoBehaviour
 		StartCoroutine(UpdateCubeGrid(2));
 	}
 
-	void CreateRules() {
-		var random = new System.Random(simSettings.Seed);
-		for (int i=0; i<numRules; i++){
-			if (random.Next(0, 10) < 4){
-				Rules[i] = 1;
-			} else {
-				Rules[i] = 0;
-			}
-		}
-		_rulesBuffer.SetData(Rules);
-		PrintRules();
+	void UpdateRules() {
+		var rulePath = Application.persistentDataPath + "/CurrentRules.json";
+		var json = File.ReadAllText(rulePath);
+		var ruleObject = JsonUtility.FromJson<AutomatonRuleData>(json);
+
+		Rules = ruleObject.Rules;
 	}
 
-	void PrintRules(){
-		string res = "";
-		for (int i=0; i<numRules; i++){
-			res += "Rule: " + System.Convert.ToString(i, 2) + " Value: " + System.Convert.ToString(Rules[i]) + "\n";
-		}
-		UnityEngine.Debug.Log(res);
+	void UpdateSettings() {
+		var settingsPath = Application.persistentDataPath + "/SimSettings.json";
+		var json = File.ReadAllText(settingsPath);
+		var settingsObject = JsonUtility.FromJson<SimulationSettingsData>(json);
+
+		CubesPerAxis = settingsObject.sideLength;
+		TimePerStep = settingsObject.timeStep;
+		Seed = settingsObject.seed;
 	}
 
-    void UpdateCubeAliveInUnity()
+	void UpdateCubeAliveInUnity()
     {
         for (int i = 0; i < _cubes.Length; i++)
         {

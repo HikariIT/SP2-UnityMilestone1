@@ -2,81 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
+using Menu;
 
-public class CameraMovement : MonoBehaviour
-{
-    public SimSettings simSettings;
-    private float moveSpeed = 30f;
+public class CameraMovement : MonoBehaviour {
+    private float _moveSpeed;
+    private int _sideLength;
 
     private Vector3 target;
+    private float currentX = 0.0f;
+    private float currentY = 0.0f;
+    private float distance;
 
-    void Start()
-    {
-        // Set the camera's background color to dark gray
+    private void Start() {
+        if (Camera.main == null)
+            return;
+        
+        var settingsPath = Application.persistentDataPath + "/SimSettings.json";
+        var json = File.ReadAllText(settingsPath);
+        var settingsObject = JsonUtility.FromJson<SimulationSettingsData>(json);
+        
         Camera.main.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
 
-        this.moveSpeed = simSettings.moveSpeed;
+        _sideLength = settingsObject.sideLength;
+        _moveSpeed = settingsObject.cameraSpeed;
+        distance = _sideLength * 2;
+        
+        target = new Vector3(
+            (float) settingsObject.sideLength / 2, 
+            (float) settingsObject.sideLength / 2, 
+            (float) settingsObject.sideLength / 2);
 
-        var numCubes = simSettings.CubesPerAxis;
-        this.target = new Vector3(numCubes / 2, numCubes / 2, numCubes / 2);
         transform.LookAt(target);
     }
 
-    void Update()
-    {
+    private void LateUpdate() {
+        currentX += ((Input.GetKey("s") ? -1.0f : 0.0f) + (Input.GetKey("w") ? 1.0f : 0.0f)) * _moveSpeed * Time.deltaTime * 10;
+        currentY += ((Input.GetKey("d") ? -1.0f : 0.0f) + (Input.GetKey("a") ? 1.0f : 0.0f)) * _moveSpeed * Time.deltaTime * 10;
         
-        // Move the camera backward on the "Q" key press
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.RotateAround(target, Vector3.forward, moveSpeed * Time.deltaTime);
-            //transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
-        }
+        var dir = new Vector3(0, 0, -distance);
+        var rotation = Quaternion.Euler(currentX, currentY, 0);
+        transform.position = target + rotation * dir;
+        transform.LookAt(target);
 
-        // Move the camera forward on the "E" key press
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.RotateAround(target, Vector3.back, moveSpeed * Time.deltaTime);
-            //transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        }
-        // Move the camera left on the "A" key press
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.RotateAround(target, Vector3.up, moveSpeed * Time.deltaTime);
-            //transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
-        }
-
-        // Move the camera right on the "D" key press
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.RotateAround(target, Vector3.down, moveSpeed * Time.deltaTime);
-            //transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-        }
-
-        // Move the camera up on the "W" key press
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.RotateAround(target, Vector3.left, moveSpeed * Time.deltaTime);
-            //transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
-        }
-
-        // Move the camera down on the "S" key press
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.RotateAround(target, Vector3.right, moveSpeed * Time.deltaTime);
-            //transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.R))
-        {
-            transform.LookAt(target);
-        }
-        //transform.LookAt(target);
+        distance -= Input.mouseScrollDelta.y * 5f;
     }
 }
