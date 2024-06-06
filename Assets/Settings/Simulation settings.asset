@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47922f3fb244b6240972bc85fe16eb05, type: 3}
   m_Name: Simulation settings
   m_EditorClassIdentifier: 
-  Seed: 420
-  CubesPerAxis: 30
-  StartingCubesPerAxis: 5
-  TimePerStep: 0.5
-  moveSpeed: 30
+  Seed: 69
+  CubesPerAxis: 40
+  FreeMargin: 15
+  TimePerStep: 0.05
+  moveSpeed: 100
   numberOfExecutions: 10

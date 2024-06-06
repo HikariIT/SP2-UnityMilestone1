@@ -28,7 +28,7 @@ int indexFromId(uint3 id)
 [numthreads(8,8,8)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    if (id.x > _CubesPerAxis - 1 || id.y > _CubesPerAxis - 1 || id.z > _CubesPerAxis - 1)
+    if (id.x > (uint)(_CubesPerAxis - 1) || id.y > (uint)(_CubesPerAxis - 1) || id.z > (uint)(_CubesPerAxis - 1))
     {
         return;
     }
