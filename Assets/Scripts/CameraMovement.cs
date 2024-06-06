@@ -19,44 +19,64 @@ public class CameraMovement : MonoBehaviour
 
         var numCubes = simSettings.CubesPerAxis;
         this.target = new Vector3(numCubes / 2, numCubes / 2, numCubes / 2);
+        transform.LookAt(target);
     }
 
     void Update()
     {
+        
         // Move the camera backward on the "Q" key press
         if (Input.GetKey(KeyCode.Q))
         {
-            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+            transform.RotateAround(target, Vector3.forward, moveSpeed * Time.deltaTime);
+            //transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
         }
 
         // Move the camera forward on the "E" key press
         if (Input.GetKey(KeyCode.E))
         {
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            transform.RotateAround(target, Vector3.back, moveSpeed * Time.deltaTime);
+            //transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
         // Move the camera left on the "A" key press
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            transform.RotateAround(target, Vector3.up, moveSpeed * Time.deltaTime);
+            //transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
         }
 
         // Move the camera right on the "D" key press
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            transform.RotateAround(target, Vector3.down, moveSpeed * Time.deltaTime);
+            //transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
         }
 
         // Move the camera up on the "W" key press
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
+            transform.RotateAround(target, Vector3.left, moveSpeed * Time.deltaTime);
+            //transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
         }
 
         // Move the camera down on the "S" key press
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
+            transform.RotateAround(target, Vector3.right, moveSpeed * Time.deltaTime);
+            //transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
         }
-        transform.LookAt(target);
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            transform.LookAt(target);
+        }
+        //transform.LookAt(target);
     }
 }
